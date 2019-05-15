@@ -70,6 +70,7 @@ import {
       destination: new google.maps.LatLng(37.768, -122.511),
       directions: null,
       markers:[{
+        "scheduleStatus":'PTO',
         "showInfo": false,
         "distance":null,
         "formatted_address": `3818 Sunset Blvd, Los Angeles, CA 90026, USA`,
@@ -81,6 +82,19 @@ import {
         },
       },
       {
+        "scheduleStatus":'Booked',
+        "showInfo": false,
+        "distance":null,
+        "formatted_address": `3818 Sunset Blvd, Los Angeles, CA 90026, USA`,
+        "userType": `TS`,
+        "name": `Flore Vegan`,       
+        "location": {
+          "lat": 37.77,
+          "lng": -122.447,
+        },
+      },
+      {
+        "scheduleStatus":'TBA',
         "showInfo": false,
         "distance":null,
         "formatted_address": `1700 Sunset Blvd, Los Angeles, CA 90026, USA`,
@@ -93,10 +107,11 @@ import {
         },
       },
       {
+        "scheduleStatus":'Available',
         "showInfo": false,
         "distance":null,
         "formatted_address": `8284 Melrose Ave, Los Angeles, CA 90046, USA`,
-        "userType": `S`,
+        "userType": `TS`,
         "name": `Sage Plant Based Bistro and Brewery Echo Park`,
        
         "location": {
@@ -105,17 +120,111 @@ import {
         },
       },
       {
+        "scheduleStatus":null,
         "showInfo": false,
         "distance":null,
-        "formatted_address": `4319 Sunset Blvd, Los Angeles, CA 90029, USA`,
+        "formatted_address": `Sun Valley, Los Angeles, CA, USA`,
         "userType": `S`,
-        "name": `Sage Plant Based Bistro and Brewery Echo Park`,
+        "name": `Sun Valley`,
        
         "location": {
-          "lat": 34.0951843,
-          "lng": -118.283107,
+          "lat": 34.0544,
+          "lng": -118.2439,
         },
-      }],
+        
+      },
+      {
+        "scheduleStatus":null,
+        "showInfo": false,
+        "distance":null,
+        "formatted_address": `500 South Michigan Avenue, Chicago, Illinois 60605, United States`,
+        "userType": `S`,
+        "name": `Placitas`,
+       
+        "location": {
+          "lat": 41.8756,
+          "lng": -87.6244,
+        }
+      },
+      {
+        "scheduleStatus":null,
+        "showInfo": false,
+        "distance":null,
+        "formatted_address": `10070 Commerce Avenue, Tujunga, California 91042, United States`,
+        "userType": `S`,
+        "name": `Tujunga`,
+       
+        "location": {
+          "lat": 34.2522,
+          "lng": -118.2884,
+        }
+      },
+      {
+        "scheduleStatus":null,
+        "showInfo": false,
+        "distance":null,
+        "formatted_address": `5542 Tampa Avenue, Tarzana, California 91356, United States`,
+        "userType": `S`,
+        "name": `Tarzana`,
+       
+        "location": {
+          "lat": 34.1728,
+          "lng": -118.5534,
+        }
+      },
+      {
+        "scheduleStatus":null,
+        "showInfo": false,
+        "distance":null,
+        "formatted_address": `4272 Laurel Canyon Boulevard, Studio City, California 91604, United States`,
+        "userType": `S`,
+        "name": `Studio City`,
+       
+        "location": {
+          "lat": 34.1484,
+          "lng":-118.3962,
+        }
+      },
+      {
+        "scheduleStatus":null,
+        "showInfo": false,
+        "distance":null,
+        "formatted_address": `18508 Sherman Way, Reseda, California 91335, United States`,
+        "userType": `S`,
+        "name": `Reseda`,
+       
+        "location": {
+          "lat": 34.2011,
+          "lng":-118.5365,
+        }
+      },
+      {
+        "scheduleStatus":null,
+        "showInfo": false,
+        "distance":null,
+        "formatted_address": `Office of the Los Angeles Public Defender, 210 W Temple St Fl 19, Los Angeles, California 90012, United States`,
+        "userType": `S`,
+        "name": `Reseda`,
+       
+        "location": {
+          "lat": 34.0544,
+          "lng":-118.2439,
+        }
+      },
+      {
+        "scheduleStatus":null,
+        "showInfo": false,
+        "distance":null,
+        "formatted_address": `Office of the Los Angeles Public Defender, 210 W Temple St Fl 19, Los Angeles, California 90012, United States`,
+        "userType": `S`,
+        "name": `Reseda`,
+       
+        "location": {
+          "lat": 34.0544,
+          "lng":-118.2439,
+        }
+      }
+    ],
     }
   
    
