@@ -39,14 +39,18 @@ import {
             */}
             {marker.showInfo && (
               <InfoWindow onCloseClick={() => props.onMarkerClose(marker)}>
-                <div>{marker.formatted_address}</div>
+                <div>
+                  {marker.formatted_address}
+                  {marker.distance && <div>{marker.distance}</div>}
+                </div>
+              
               </InfoWindow>
             )}
           </Marker>
         )})
       
       }
-        {props.directions && <DirectionsRenderer directions={props.directions} /> }
+        {props.directions && <DirectionsRenderer directions={props.directions} options={{suppressMarkers: true}} /> }
       </GoogleMap>
     );
   })
@@ -58,12 +62,12 @@ import {
   export default class DirectionsExample extends Component {
   
     state = {
-      origin: new google.maps.LatLng(34.091158, -118.2795188),
+      origin: new google.maps.LatLng(37.77, -122.447),
       // destination: {
       //   lat:'',
       //   lng:''
       // },
-      destination: new google.maps.LatLng(41.8525800, -87.6514100),
+      destination: new google.maps.LatLng(37.768, -122.511),
       directions: null,
       markers:[{
         "showInfo": false,
@@ -72,8 +76,8 @@ import {
         "userType": `TS`,
         "name": `Flore Vegan`,       
         "location": {
-          "lat": 34.091158,
-          "lng": -118.2795188,
+          "lat": 37.77,
+          "lng": -122.447,
         },
       },
       {
@@ -90,7 +94,7 @@ import {
       },
       {
         "showInfo": false,
-        "distance":`12`,
+        "distance":null,
         "formatted_address": `8284 Melrose Ave, Los Angeles, CA 90046, USA`,
         "userType": `S`,
         "name": `Sage Plant Based Bistro and Brewery Echo Park`,
@@ -102,7 +106,7 @@ import {
       },
       {
         "showInfo": false,
-        "distance":`12`,
+        "distance":null,
         "formatted_address": `4319 Sunset Blvd, Los Angeles, CA 90029, USA`,
         "userType": `S`,
         "name": `Sage Plant Based Bistro and Brewery Echo Park`,
@@ -117,7 +121,7 @@ import {
    
     handleMarkerClick = this.handleMarkerClick.bind(this);
     handleMarkerClose = this.handleMarkerClose.bind(this);
-    //distanceCalculator = this.distanceCalculator.bind(this);
+   
 
     distanceCalculator=(meineLongitude, meineLatitude, long1, lat1)=> {
       const erdRadius = 6371;
@@ -165,43 +169,66 @@ import {
           if (marker === targetMarker) {
             return {
               ...marker,
-              showInfo: false,
+              showInfo: true,
             };
           }
           return marker;
         }),
       });
+      if(targetMarker.userType === 'TS'){
+        this.state.markers.map(marker =>{
+          if(marker.userType !== 'TS')
+          {
+            nearestLocation.push(this.distanceCalculator(targetMarker.location.lng,targetMarker.location.lat, marker.location.lng, marker.location.lat));
+          }
+        });
+        const min = Math.min.apply(null, nearestLocation.map(function(item) {
+          return item.distance;
+        }));
+       
+    
+        let obj = nearestLocation.find(obj => obj.distance === min);
+        let distance =null;
+        this.setState({
+          markers: this.state.markers.map(marker => {           
+              if ((marker.location.lat && marker.location.lng) === (obj.lat && obj.lng)) {
+                 if (obj.distance < 1) {
+                   distance =  Math.round(obj.distance * 1000) +" m";          
+                  } else {
+                    distance = Math.round(obj.distance * 10) / 10 +" km";                      
+                  }               
+              }
+              return {
+                ...marker,                  
+                distance:distance,
+              };                     
+          }),
+        })
 
-      this.state.markers.map(marker =>{
-        if(marker.userType !== 'TS')
-        {
-          nearestLocation.push(this.distanceCalculator(targetMarker.location.lat,targetMarker.location.lng, marker.location.lat, marker.location.lng));
-        }
-      });
 
-      const min = Math.min.apply(null, nearestLocation.map(function(item) {
-        return item.distance;
-      }));
-  
-      let obj = nearestLocation.find(obj => obj.distance === min);
-debugger;
-      this.setState({destination:new google.maps.LatLng(obj.lng, obj.lat) })
+        console.log('destinationlat' + obj.lat);
+        console.log('destinationlng' + obj.lng);
+        console.log('orginalLat' + targetMarker.location.lat);
+        console.log('orginallng' + targetMarker.location.lng);
+        this.setState({destination:new google.maps.LatLng(obj.lat, obj.lng) })
       
-      const DirectionsService = new google.maps.DirectionsService();
-  
-      DirectionsService.route({
-        origin:{lat:targetMarker.location.lat ,lng:targetMarker.location.lng},
-        destination: this.state.destination,
-        travelMode: google.maps.TravelMode.DRIVING,
-      }, (result, status) => {
-        if (status === google.maps.DirectionsStatus.OK) {
-          this.setState({
-            directions: result,
-          });
-        } else {
-          console.error(`error fetching directions ${result}`);
-        }
-      });
+        const DirectionsService = new google.maps.DirectionsService();
+        //DirectionsService.setOptions( { suppressMarkers: true } );
+        DirectionsService.route({
+          origin:{lat:targetMarker.location.lat ,lng:targetMarker.location.lng},
+          destination: this.state.destination,
+          travelMode: google.maps.TravelMode.DRIVING,
+          optimizeWaypoints: true,
+        }, (result, status) => {
+          if (status === google.maps.DirectionsStatus.OK) {
+            this.setState({
+              directions: result,
+            });
+          } else {
+            console.error(`error fetching directions ${result}`);
+          }
+        });
+      }
     }
   
     handleMarkerClose(targetMarker) {
