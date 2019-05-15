@@ -12,16 +12,23 @@ import {
     InfoWindow,
 } from "react-google-maps";
 
-
+export const iconColor={
+             booked:'red',
+             Available:'green',
+             PTO:'yellow',
+             TBA:'orange',
+             supplier:'blue'
+}
 const DirectionsExampleGoogleMap = withGoogleMap(props => {
     debugger;
+const iconUrl = "http://maps.google.com/mapfiles/ms/icons/"
     return (
         <GoogleMap
             defaultCenter={props.center}
             zoom={10}
         >
             <div id="floating-panel">
-                <b>Start: </b>
+                <b>Technical Specialist: </b>
 
                 <select id="start" name="start" onClick={props.handledropDownClick}>
                     {props.markers.map(x => {
@@ -34,7 +41,7 @@ const DirectionsExampleGoogleMap = withGoogleMap(props => {
                     })}
 
                 </select>
-                <b>End: </b>
+                <b>Suppliers: </b>
                 <select id="end" name="end" onClick={props.handledropDownClick}>
                     {props.markers.map(x => {
                         if (x.userType !== 'TS') {
@@ -55,18 +62,20 @@ const DirectionsExampleGoogleMap = withGoogleMap(props => {
                         onClick={() => props.onMarkerClick(marker)}
                         label={marker.userType}
                         labelStyle={{ color: '#fff', fontSize: '14px', background: '#fff' }}
-                    >
-
-                        {/*
-              Show info window only if the 'showInfo' key of the marker is true.
-              That is, when the Marker pin has been clicked and 'onCloseClick' has been
-              Successfully fired.
-            */}
+                        icon={{
+                              
+                            url: marker.userType === 'TS' ? iconUrl+iconColor[marker.scheduleStatus]+'.png' : iconUrl+iconColor.supplier+'.png' ,
+                            size: new google.maps.Size(48,40),
+                            scaledSize: new google.maps.Size(48, 40)
+                               
+                        }}
+                    >           
                         {marker.showInfo && (
                             <InfoWindow onCloseClick={() => props.onMarkerClose(marker)}>
                                 <div>
-                                    {marker.formatted_address}
-                                    {marker.distance && <div>{marker.distance}</div>}
+                                    <p>{marker.formatted_address}</p>
+                                    <p>{marker.name}  { marker.userType === 'TS' &&   <span style={{ color:iconColor[marker.scheduleStatus] , fontWeight:600}}>: {marker.scheduleStatus}</span> } </p>
+                                    {marker.distance && <div  style={{fontWeight:600}}>{marker.distance}</div>}
                                 </div>
 
                             </InfoWindow>
@@ -86,13 +95,15 @@ const DirectionsExampleGoogleMap = withGoogleMap(props => {
  * Add <script src="https://maps.googleapis.com/maps/api/js"></script> to your HTML to provide google.maps reference
  */
 export default class DirectionsExample extends Component {
-
-    state = {
+ constructor(props){
+     super(props);
+     this.state = {
         origin: new google.maps.LatLng(34.054396, -118.243865),
-
         destination: new google.maps.LatLng(37.768, -122.511),
+        parentLat:{lat:'',lng:''},
         directions: null,
-        markers: [{
+        markers: [
+            {
             "scheduleStatus": 'PTO',
             "showInfo": false,
             "distance": null,
@@ -237,12 +248,72 @@ export default class DirectionsExample extends Component {
 
         ]
     }
+  this.handleMarkerClick.bind(this);
+ this.handleMarkerClose.bind(this);
+  this.handledropDownClick.bind(this);
 
+ }
+    
+    handledropDownClick=(e) =>{
+        e.preventDefault();
+        const selectedName = e.target.value;
+        let selectedLatitude = {};
+        this.state.markers.map(x => {
+            if (x.name === selectedName) {
+                selectedLatitude = { 'lat': x.location.lat, 'lng': x.location.lng }
+            }
+        });
+        if (e.target.name === 'start') {
+            this.setState({
+                origin: new google.maps.LatLng(selectedLatitude.lat, selectedLatitude.lng),
+            })
+        }
+        if (e.target.name === 'end') {
+            this.setState({
+                destination: new google.maps.LatLng(selectedLatitude.lat, selectedLatitude.lng)
+            })
+        }
+        //this.updateDistance(this.distanceCalculator(this.state.origin.lng, this.state.origin.lat, selectedLatitude.lng, selectedLatitude.lat));
+        this.getrootMapServices();
 
-    handleMarkerClick = this.handleMarkerClick.bind(this);
-    handleMarkerClose = this.handleMarkerClose.bind(this);
-    handledropDownClick = this.handledropDownClick.bind(this);
+    };
+    // Toggle to 'true' to show InfoWindow and re-renders component
+    handleMarkerClick =(targetMarker)=> {
+        debugger;        
+        //Onclick Marker show Infobox
+        this.setState({
+            markers: this.state.markers.map((marker,i) => {
+                if (marker === targetMarker) {
+                    return {
+                        ...marker,
+                        showInfo: !marker.showInfo,
+                        
+                    };
+                }
+                return marker;
+            })
+           
+        });
+        if (targetMarker.userType === 'TS') {
+            this.getShortestLocation(targetMarker)
+        } else if(targetMarker.userType === 'S'){
+            this.updateDistance(this.distanceCalculator(this.state.parentLat.lng, this.state.parentLat.lat, targetMarker.location.lng, targetMarker.location.lat));
+        }
+    };
 
+    handleMarkerClose=(targetMarker)=> {
+        this.setState({
+            markers: this.state.markers.map(marker => {
+                if (marker === targetMarker) {
+                    return {
+                        ...marker,
+                        showInfo: !marker.showInfo,
+                    };
+                }
+                return marker;
+            }),
+        });
+    };
 
     distanceCalculator = (meineLongitude, meineLatitude, long1, lat1) => {
         const erdRadius = 6371;
@@ -281,59 +352,33 @@ export default class DirectionsExample extends Component {
         return nearestLocationObj;
     };
 
-    handledropDownClick(e) {
-        e.preventDefault();
-        const selectedName = e.target.value;
-        let selectedLatitude = {};
-        this.state.markers.map(x => {
-            if (x.name === selectedName) {
-                selectedLatitude = { 'lat': x.location.lat, 'lng': x.location.lng }
-            }
-        });
-        if (e.target.name === 'start') {
-            this.setState({
-                origin: new google.maps.LatLng(selectedLatitude.lat, selectedLatitude.lng),
-            })
-        }
-        if (e.target.name === 'end') {
-            this.setState({
-                destination: new google.maps.LatLng(selectedLatitude.lat, selectedLatitude.lng)
-            })
-        }
-        this.getrootMapServices();
-
-    }
-
-
-    // Toggle to 'true' to show InfoWindow and re-renders component
-    handleMarkerClick(targetMarker) {
+    getShortestLocation=(targetMarker)=>{
         debugger;
         const nearestLocation = [];
-        //Onclick Marker show Infobox
-        this.setState({
-            markers: this.state.markers.map(marker => {
-                if (marker === targetMarker) {
-                    return {
-                        ...marker,
-                        showInfo: true,
-                    };
-                }
-                return marker;
-            }),
+        this.state.markers.map(marker => {
+            if (marker.userType !== 'TS') {
+                nearestLocation.push(this.distanceCalculator(targetMarker.location.lng, targetMarker.location.lat, marker.location.lng, marker.location.lat));
+            }
         });
-        if (targetMarker.userType === 'TS') {
-            this.state.markers.map(marker => {
-                if (marker.userType !== 'TS') {
-                    nearestLocation.push(this.distanceCalculator(targetMarker.location.lng, targetMarker.location.lat, marker.location.lng, marker.location.lat));
-                }
-            });
-            const min = Math.min.apply(null, nearestLocation.map(function (item) {
-                return item.distance;
-            }));
+        //Find Minimum Distance Here...
+        const min = Math.min.apply(null, nearestLocation.map(function (item) {
+            return item.distance;
+        }));
+        let obj = nearestLocation.find(obj => obj.distance === min);
 
+        this.updateDistance(obj);
 
-            let obj = nearestLocation.find(obj => obj.distance === min);
-            let distance = null;
+        this.setState({
+            origin: new google.maps.LatLng(targetMarker.location.lat, targetMarker.location.lng),
+            destination: new google.maps.LatLng(obj.lat, obj.lng),
+            parentLat:{lat:targetMarker.location.lat,lng:targetMarker.location.lng}
+        })
+        this.getrootMapServices();
+    };
+
+    updateDistance=(obj)=> {
+        debugger;
+        let distance = null;
             this.setState({
                 markers: this.state.markers.map(marker => {
                     if ((marker.location.lat && marker.location.lng) === (obj.lat && obj.lng)) {
@@ -342,28 +387,17 @@ export default class DirectionsExample extends Component {
                         } else {
                             distance = Math.round(obj.distance * 10) / 10 + " km";
                         }
+                        return {
+                            ...marker,
+                            distance: distance,
+                        };
                     }
-                    return {
-                        ...marker,
-                        distance: distance,
-                    };
+                    return marker;
                 }),
-            })
+            })   
+    };
 
-            console.log('destinationlat' + obj.lat);
-            console.log('destinationlng' + obj.lng);
-            console.log('orginalLat' + targetMarker.location.lat);
-            console.log('orginallng' + targetMarker.location.lng);
-            this.setState({
-                origin: new google.maps.LatLng(targetMarker.location.lat, targetMarker.location.lng),
-                destination: new google.maps.LatLng(obj.lat, obj.lng)
-            })
-
-            this.getrootMapServices();
-
-        }
-    }
-    getrootMapServices() {
+    getrootMapServices=()=>{
         const DirectionsService = new google.maps.DirectionsService();
         DirectionsService.route({
             origin: this.state.origin,
@@ -379,20 +413,7 @@ export default class DirectionsExample extends Component {
                 console.error(`error fetching directions ${result}`);
             }
         });
-    }
-    handleMarkerClose(targetMarker) {
-        this.setState({
-            markers: this.state.markers.map(marker => {
-                if (marker === targetMarker) {
-                    return {
-                        ...marker,
-                        showInfo: false,
-                    };
-                }
-                return marker;
-            }),
-        });
-    }
+    };
 
     render() {
         return (
