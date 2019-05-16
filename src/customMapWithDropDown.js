@@ -75,7 +75,7 @@ const iconUrl = "http://maps.google.com/mapfiles/ms/icons/"
                         {marker.showInfo && (
                             <InfoWindow onCloseClick={() => props.onMarkerClose(marker)}>
                                 <div>
-                                    <p>{marker.formatted_address}</p>
+                        {props.directions !== null && <p>{props.directions.routes[0].legs[0].start_address}{props.directions.routes[0].legs[0].distance.text} {props.directions.routes[0].legs[0].duration.text}</p> }
                                     <p>{marker.name}  { marker.userType === 'TS' &&   <span style={{ color:iconColor[marker.scheduleStatus] , fontWeight:600}}>: {marker.scheduleStatus}</span> } </p>
                                     { marker.distance && <div  style={{fontWeight:600}}>Seleted Supplier Distance : {marker.distance}</div>}
                                 </div>
@@ -265,10 +265,12 @@ export default class DirectionsExample extends Component {
             })
         }
         const distance = this.distanceCalculator(this.state.parentLat.lng, this.state.parentLat.lat, selectedLatitude.location.lng, selectedLatitude.location.lat,selectedLatitude.name);
-        this.updateDistance(distance, selectedLatitude);
+        
         if(e.target.name === 'start'){
+            this.updateDistance(distance, selectedLatitude.location);
             this.getrootMapServices(selectedLatitude.location,this.state.selectedSupplier);
         }else{
+            this.updateDistance(distance, this.state.parentLat);
             this.getrootMapServices(this.state.parentLat,selectedLatitude.location);
         }
      
@@ -376,7 +378,7 @@ export default class DirectionsExample extends Component {
             this.setState({
                 markers: this.state.markers.map(marker => {
                      if(marker.userType === 'TS'){
-                        if ((marker.location.lat && marker.location.lng) === (targetMarker.location.lat && targetMarker.location.lng)) {
+                        if ((marker.location.lat && marker.location.lng) === (targetMarker.lat && targetMarker.lng)) {
                             if (obj.distance < 1) {
                                 distance = Math.round(obj.distance * 1000) + " m";
                             } else {
