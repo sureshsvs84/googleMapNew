@@ -3,12 +3,12 @@ import logo from './logo.svg';
 import './App.css';
 import './mapStyle.css';
 //import DirectionsExample from './customMap';
-import DirectionsExample from './customMapWithDropDown';
+import DirectionswithDistanceExample from './customMapWithDistance';
 
 function App() {
   return (
     <div className="App">
-     <DirectionsExample/>
+     <DirectionswithDistanceExample/>
     </div>
   );
 }
