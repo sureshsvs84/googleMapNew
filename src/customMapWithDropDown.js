@@ -13,14 +13,14 @@ import {
 } from "react-google-maps";
 
 export const iconColor={
-             booked:'red',
+             Booked:'red',
              Available:'green',
              PTO:'yellow',
              TBA:'orange',
              supplier:'blue'
 }
 const DirectionsExampleGoogleMap = withGoogleMap(props => {
-    debugger;
+    
 const iconUrl = "http://maps.google.com/mapfiles/ms/icons/"
     return (
         <GoogleMap
@@ -30,31 +30,33 @@ const iconUrl = "http://maps.google.com/mapfiles/ms/icons/"
             <div id="floating-panel">
                 <b>Technical Specialist: </b>
 
-                <select id="start" name="start" onClick={props.handledropDownClick}>
-                    {props.markers.map(x => {
+                <select id="start" name="start" onChange={props.handledropDownClick} value={props.selectedTS}>
+                    {props.markers.map((x,i) => {
+                       
                         if (x.userType === 'TS') {
                             return (
-                                <option value={x.name}>{x.name}</option>
+                                <option key={i} value={x.name}>{x.name}</option>
                             )
                         }
-
+                         return null;
                     })}
 
                 </select>
                 <b>Suppliers: </b>
-                <select id="end" name="end" onClick={props.handledropDownClick}>
-                    {props.markers.map(x => {
+                <select id="end" name="end" onChange={props.handledropDownClick}  value={props.selectedSupplier}>
+                    {props.markers.map((x,i) => {
                         if (x.userType !== 'TS') {
                             return (
-                                <option value={x.name}>{x.name}</option>
+                                <option key={i} value={x.name}>{x.name}</option>
                             )
                         }
+                        return null;
                     })}
                 </select>
             </div>
 
             {props.markers.map((marker, index) => {
-                debugger;
+                
                 return (
                     <Marker
                         key={index}
@@ -75,7 +77,7 @@ const iconUrl = "http://maps.google.com/mapfiles/ms/icons/"
                                 <div>
                                     <p>{marker.formatted_address}</p>
                                     <p>{marker.name}  { marker.userType === 'TS' &&   <span style={{ color:iconColor[marker.scheduleStatus] , fontWeight:600}}>: {marker.scheduleStatus}</span> } </p>
-                                    {marker.distance && <div  style={{fontWeight:600}}>{marker.distance}</div>}
+                                    { marker.distance && <div  style={{fontWeight:600}}>Seleted Supplier Distance : {marker.distance}</div>}
                                 </div>
 
                             </InfoWindow>
@@ -98,72 +100,73 @@ export default class DirectionsExample extends Component {
  constructor(props){
      super(props);
      this.state = {
-        origin: new google.maps.LatLng(34.054396, -118.243865),
-        destination: new google.maps.LatLng(37.768, -122.511),
-        parentLat:{lat:'',lng:''},
+        origin: new google.maps.LatLng(13.09, 80.27),
+        destination: new google.maps.LatLng(13.1, 79.66667),
+        parentLat:{lat:'',lng:'',name:''},
+        selectedSupplier:{lat:'',lng:'',name:''},
         directions: null,
         markers: [
             {
             "scheduleStatus": 'PTO',
             "showInfo": false,
             "distance": null,
-            "formatted_address": `Office of the Los Angeles Public Defender, 210 W Temple St Fl 19, Los Angeles, California 90012, United States`,
+            "formatted_address": `Nehru Indoor Stadium, Chennai, Tamil Nadu, India`,
             "userType": `TS`,
-            "name": `Los Angeles`,
+            "name": `Nehru Indoor Stadium`,
             "location": {
-                "lat": 34.054396,
-                "lng": -118.243865,
+                "lat":13.09,
+                "lng":80.27,
             },
         },
         {
             "scheduleStatus": 'Booked',
             "showInfo": false,
             "distance": null,
-            "formatted_address": `28788 Avenue 16, Madera, California 93636, United States`,
+            "formatted_address": `Ambur Railway Station, Ambur, Tamil Nadu, India`,
             "userType": `TS`,
-            "name": `California`,
+            "name": `Ambur Railway Station`,
             "location": {
-                "lat": 37,
-                "lng": -120,
+                "lat": 12.779902,
+                "lng": 78.718839,
             },
         },
         {
             "scheduleStatus": 'TBA',
             "showInfo": false,
             "distance": null,
-            "formatted_address": `1700 Sunset Blvd, Los Angeles, CA 90026, USA`,
+            "formatted_address": `Anaimalai, Pollachi, Coimbatore, Tamil Nadu, India`,
             "userType": `TS`,
-            "name": `Sage Plant Based Bistro and Brewery Echo Park`,
+            "name": `Anaimalai`,
 
             "location": {
-                "lat": 34.0771192,
-                "lng": -118.2587199,
+                "lat": 10.596879,
+                "lng": 76.946342,
             },
         },
         {
             "scheduleStatus": 'Available',
             "showInfo": false,
             "distance": null,
-            "formatted_address": `8284 Melrose Ave, Los Angeles, CA 90046, USA`,
+            "formatted_address": `Kilkuppam, Arakkonam, Vellore, Tamil Nadu, India`,
             "userType": `TS`,
-            "name": `Sage Plant Based Bistro and Brewery Echo Park`,
+            "name": `Kilkuppam`,
 
             "location": {
-                "lat": 34.083527,
-                "lng": -118.370157,
+                "lat": 13.1,
+                "lng": 79.66667,
             },
         },
         {
             "scheduleStatus": null,
             "showInfo": false,
             "distance": null,
-            "formatted_address": `Sun Valley, Los Angeles, CA, USA`,
+            "formatted_address": `Arantangi, Tamil Nadu, India`,
             "userType": `S`,
-            "name": `Sun Valley`,
+            "name": `Arantangi`,
 
             "location": {
-                "lat": 34.0544,
-                "lng": -118.2439,
+                "lat": 10.1631,
+                "lng": 78.9962,
             },
 
         },
@@ -171,123 +174,117 @@ export default class DirectionsExample extends Component {
             "scheduleStatus": null,
             "showInfo": false,
             "distance": null,
-            "formatted_address": `500 South Michigan Avenue, Chicago, Illinois 60605, United States`,
+            "formatted_address": `Mazhayur, Arcot, Vellore, Tamil Nadu, India`,
             "userType": `S`,
-            "name": `Placitas`,
+            "name": `Mazhayur`,
 
             "location": {
-                "lat": 41.8756,
-                "lng": -87.6244,
+                "lat": 12.760165,
+                "lng": 79.368868,
             }
         },
         {
             "scheduleStatus": null,
             "showInfo": false,
             "distance": null,
-            "formatted_address": `10070 Commerce Avenue, Tujunga, California 91042, United States`,
+            "formatted_address": `Attur, Tamil Nadu, India`,
             "userType": `S`,
-            "name": `Tujunga`,
+            "name": `Attur`,
 
             "location": {
-                "lat": 34.2522,
-                "lng": -118.2884,
+                "lat": 11.59934,
+                "lng": 78.59775,
             }
         },
         {
             "scheduleStatus": null,
             "showInfo": false,
             "distance": null,
-            "formatted_address": `5542 Tampa Avenue, Tarzana, California 91356, United States`,
+            "formatted_address": `Coimbatore, Coimbatore, Tamil Nadu, India`,
             "userType": `S`,
-            "name": `Tarzana`,
+            "name": `Coimbatore`,
 
             "location": {
-                "lat": 34.1728,
-                "lng": -118.5534,
+                "lat": 11.009075,
+                "lng": 76.933337,
             }
         },
         {
             "scheduleStatus": null,
             "showInfo": false,
             "distance": null,
-            "formatted_address": `4272 Laurel Canyon Boulevard, Studio City, California 91604, United States`,
+            "formatted_address": `Dharapuram, Tamil Nadu, India`,
             "userType": `S`,
-            "name": `Studio City`,
+            "name": `Dharapuram`,
 
             "location": {
-                "lat": 34.1484,
-                "lng": -118.3962,
+                "lat": 10.73,
+                "lng": 77.52,
             }
         },
         {
             "scheduleStatus": null,
             "showInfo": false,
             "distance": null,
-            "formatted_address": `18508 Sherman Way, Reseda, California 91335, United States`,
+            "formatted_address": `Tamilnadu Hotel, TTDC, Ajjanahalli, Tamil Nadu, India`,
             "userType": `S`,
-            "name": `Reseda`,
+            "name": `Ajjanahalli`,
 
             "location": {
-                "lat": 34.2011,
-                "lng": -118.5365,
+                "lat": 12.117792,
+                "lng": 77.779082,
             }
-        },
-        {
-            "scheduleStatus": null,
-            "showInfo": false,
-            "distance": null,
-            "formatted_address": `Office of the Los Angeles Public Defender, 210 W Temple St Fl 19, Los Angeles, California 90012, United States`,
-            "userType": `S`,
-            "name": `Reseda`,
-
-            "location": {
-                "lat": 34.0544,
-                "lng": -118.2439,
-            }
-        }
+        }        
 
         ]
     }
-  this.handleMarkerClick.bind(this);
- this.handleMarkerClose.bind(this);
-  this.handledropDownClick.bind(this);
-
- }
+  }
     
     handledropDownClick=(e) =>{
-        e.preventDefault();
+       // e.preventDefault();
         const selectedName = e.target.value;
         let selectedLatitude = {};
         this.state.markers.map(x => {
             if (x.name === selectedName) {
-                selectedLatitude = { 'lat': x.location.lat, 'lng': x.location.lng }
-            }
+                selectedLatitude = {"location":{'lat': x.location.lat, 'lng': x.location.lng,'name':x.name }}
+               }
+            return null;
         });
+       
         if (e.target.name === 'start') {
             this.setState({
-                origin: new google.maps.LatLng(selectedLatitude.lat, selectedLatitude.lng),
+                origin: new google.maps.LatLng(selectedLatitude.location.lat, selectedLatitude.location.lng),
+                parentLat:{lat:selectedLatitude.location.lat,lng:selectedLatitude.location.lng,name:selectedLatitude.name},
             })
         }
         if (e.target.name === 'end') {
             this.setState({
-                destination: new google.maps.LatLng(selectedLatitude.lat, selectedLatitude.lng)
+                destination: new google.maps.LatLng(selectedLatitude.location.lat, selectedLatitude.location.lng),
+                selectedSupplier:{lat:selectedLatitude.location.lat,lng:selectedLatitude.location.lng,name:selectedLatitude.name},
+                
             })
         }
-        //this.updateDistance(this.distanceCalculator(this.state.origin.lng, this.state.origin.lat, selectedLatitude.lng, selectedLatitude.lat));
-        this.getrootMapServices();
+        const distance = this.distanceCalculator(this.state.parentLat.lng, this.state.parentLat.lat, selectedLatitude.location.lng, selectedLatitude.location.lat,selectedLatitude.name);
+        this.updateDistance(distance, selectedLatitude);
+        if(e.target.name === 'start'){
+            this.getrootMapServices(selectedLatitude.location,this.state.selectedSupplier);
+        }else{
+            this.getrootMapServices(this.state.parentLat,selectedLatitude.location);
+        }
+     
+        
 
     };
     // Toggle to 'true' to show InfoWindow and re-renders component
     handleMarkerClick =(targetMarker)=> {
-        debugger;        
+                
         //Onclick Marker show Infobox
         this.setState({
             markers: this.state.markers.map((marker,i) => {
                 if (marker === targetMarker) {
                     return {
                         ...marker,
-                        showInfo: !marker.showInfo,
-                        
+                        showInfo: true,                        
                     };
                 }
                 return marker;
@@ -296,9 +293,10 @@ export default class DirectionsExample extends Component {
         });
         if (targetMarker.userType === 'TS') {
             this.getShortestLocation(targetMarker)
-        } else if(targetMarker.userType === 'S'){
-            this.updateDistance(this.distanceCalculator(this.state.parentLat.lng, this.state.parentLat.lat, targetMarker.location.lng, targetMarker.location.lat));
-        }
+        } 
+        // else if(targetMarker.userType === 'S'){
+        //     this.updateDistance(this.distanceCalculator(this.state.parentLat.lng, this.state.parentLat.lat, targetMarker.location.lng, targetMarker.location.lat));
+        // }
     };
 
     handleMarkerClose=(targetMarker)=> {
@@ -315,10 +313,11 @@ export default class DirectionsExample extends Component {
         });
     };
 
-    distanceCalculator = (meineLongitude, meineLatitude, long1, lat1) => {
+    distanceCalculator = (meineLongitude, meineLatitude, long1, lat1, distnationName) => {
         const erdRadius = 6371;
         const distnation_lng = long1;
         const distnation_lat = lat1;
+        const distnation_Name = distnationName;
 
         meineLongitude = meineLongitude * (Math.PI / 180);
         meineLatitude = meineLatitude * (Math.PI / 180);
@@ -337,28 +336,22 @@ export default class DirectionsExample extends Component {
         const d = Math.sqrt((dx * dx) + (dy * dy));
 
         let nearestLocationObj = {
+            "name":distnation_Name,
             "lat": distnation_lat,
             "lng": distnation_lng,
             "distance": d
         }
-
-        // if (d < 1) {
-        //     return Math.round(d * 1000) +" m"
-        //     ;
-        // } else {
-        //     return Math.round(d * 10) / 10 +" km"
-        //     ;
-        // }
         return nearestLocationObj;
     };
 
     getShortestLocation=(targetMarker)=>{
-        debugger;
+        
         const nearestLocation = [];
         this.state.markers.map(marker => {
             if (marker.userType !== 'TS') {
-                nearestLocation.push(this.distanceCalculator(targetMarker.location.lng, targetMarker.location.lat, marker.location.lng, marker.location.lat));
+                nearestLocation.push(this.distanceCalculator(targetMarker.location.lng, targetMarker.location.lat, marker.location.lng, marker.location.lat,marker.name));
             }
+            return null;
         });
         //Find Minimum Distance Here...
         const min = Math.min.apply(null, nearestLocation.map(function (item) {
@@ -366,42 +359,49 @@ export default class DirectionsExample extends Component {
         }));
         let obj = nearestLocation.find(obj => obj.distance === min);
 
-        this.updateDistance(obj);
+        this.updateDistance(obj,targetMarker);
 
         this.setState({
             origin: new google.maps.LatLng(targetMarker.location.lat, targetMarker.location.lng),
             destination: new google.maps.LatLng(obj.lat, obj.lng),
-            parentLat:{lat:targetMarker.location.lat,lng:targetMarker.location.lng}
+            parentLat:{lat:targetMarker.location.lat,lng:targetMarker.location.lng,name:targetMarker.name},
+            selectedSupplier:{lat:obj.lat,lng:obj.lng,name:obj.name}
         })
-        this.getrootMapServices();
+        this.getrootMapServices(targetMarker.location,obj);
     };
 
-    updateDistance=(obj)=> {
+    updateDistance=(obj,targetMarker)=> {
         debugger;
         let distance = null;
             this.setState({
                 markers: this.state.markers.map(marker => {
-                    if ((marker.location.lat && marker.location.lng) === (obj.lat && obj.lng)) {
-                        if (obj.distance < 1) {
-                            distance = Math.round(obj.distance * 1000) + " m";
-                        } else {
-                            distance = Math.round(obj.distance * 10) / 10 + " km";
+                     if(marker.userType === 'TS'){
+                        if ((marker.location.lat && marker.location.lng) === (targetMarker.location.lat && targetMarker.location.lng)) {
+                            if (obj.distance < 1) {
+                                distance = Math.round(obj.distance * 1000) + " m";
+                            } else {
+                                distance = Math.round(obj.distance * 10) / 10 + " km";
+                            }
+                            return {
+                                ...marker,
+                                distance: distance,
+                                showInfo:true
+                            };
                         }
-                        return {
-                            ...marker,
-                            distance: distance,
-                        };
-                    }
+                     }
+                   
                     return marker;
-                }),
+                })
+               
             })   
     };
 
-    getrootMapServices=()=>{
+    getrootMapServices=(originPath,destinationPath)=>{
+        debugger;
         const DirectionsService = new google.maps.DirectionsService();
         DirectionsService.route({
-            origin: this.state.origin,
-            destination: this.state.destination,
+            origin:{lat:originPath.lat,lng:originPath.lng},
+            destination: {lat:destinationPath.lat,lng:destinationPath.lng},
             travelMode: google.maps.TravelMode.DRIVING,
             optimizeWaypoints: true,
         }, (result, status) => {
@@ -414,8 +414,13 @@ export default class DirectionsExample extends Component {
             }
         });
     };
+    componentDidMount(){
+        this.setState({parentLat:{lat:13.09, lng:80.27,name:''},
+                       selectedSupplier:{lat:10.1631,lng: 78.9962,name:''},})
+    }
 
     render() {
+        
         return (
             <DirectionsExampleGoogleMap
                 containerElement={
@@ -430,6 +435,8 @@ export default class DirectionsExample extends Component {
                 onMarkerClick={this.handleMarkerClick}
                 onMarkerClose={this.handleMarkerClose}
                 handledropDownClick={this.handledropDownClick}
+                selectedTS={this.state.parentLat.name}
+                selectedSupplier={this.state.selectedSupplier.name}
 
             />
         );
