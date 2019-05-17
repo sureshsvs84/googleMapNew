@@ -3,15 +3,16 @@ import {
     default as React,
     Component,
 } from "react";
-
+import { compose } from 'recompose';
 import {
+    withScriptjs,
     withGoogleMap,
     GoogleMap,
     DirectionsRenderer,
     Marker,
     InfoWindow,
+    withProps
 } from "react-google-maps";
-
 export const iconColor={
              Booked:'red',
              Available:'green',
@@ -26,7 +27,9 @@ export const scheduleStatus={
     TBA:'TBA',
     
 }
-const DirectionsExampleGoogleMap = withGoogleMap(props => {
+const DirectionsExampleGoogleMap = compose(
+    withScriptjs,
+    withGoogleMap)(props => {
 const iconUrl = "http://maps.google.com/mapfiles/ms/icons/";
     return (
         <GoogleMap
@@ -100,9 +103,8 @@ const iconUrl = "http://maps.google.com/mapfiles/ms/icons/";
  */
 export default class DirectionswithDistanceExample extends Component {
  constructor(props){
-     super(props);
+     super(props);     
      this.state = {
-        origin: new google.maps.LatLng(13.09, 80.27),
         selectedTS:{lat:'',lng:'',name:''},
         selectedSupplier:{lat:'',lng:'',name:''},
         directions: null,
@@ -400,13 +402,11 @@ export default class DirectionswithDistanceExample extends Component {
         
         return (
             <DirectionsExampleGoogleMap
-                containerElement={
-                    <div style={{ height: `800px` }} />
-                }
-                mapElement={
-                    <div style={{ height: `100%` }} />
-                }
-                center={this.state.origin}
+                googleMapURL= "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyDZSVnT-Oaft2Stx72a_OG0DN8_Z-9-d48"
+                loadingElement={<div style={{ height: `100%` }} />}
+                containerElement={<div style={{ height: `800px` }} />}
+                mapElement= {<div style={{ height: `100%` }} />}
+                center= {{ lat: 13.09, lng:80.27}}
                 directions={this.state.directions}
                 distanceInfo={this.state.distanceInfo}
                 markers={this.state.markers}
