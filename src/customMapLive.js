@@ -4,7 +4,9 @@ import {
     Component,
 } from "react";
 import { compose } from 'recompose';
-//import  CustomInput  from '../../baseComponents/inputControlls';
+import  CustomInput  from '../../baseComponents/inputControlls';
+import { RemoveDuplicateArray }  from '../../../utils/commonUtils';
+
 import {
     withScriptjs,
     withGoogleMap,
@@ -32,37 +34,44 @@ const DirectionsServices = compose(
     withGoogleMap)(props => {
 const iconUrl = "http://maps.google.com/mapfiles/ms/icons/";
 debugger;
-const listofTechnicalSpec = props.markers.filter(x => x.scheduleStatus === scheduleStatus[x.scheduleStatus]);
-const listofSupplier = props.markers.filter(x => x.scheduleStatus === null);
+//const listofTechnicalSpec = props.markers.filter(x => x.scheduleStatus === scheduleStatus[x.scheduleStatus]);
+//const listofSupplier = props.markers.filter(x => x.scheduleStatus === null);
     return (
         <GoogleMap
             defaultCenter={props.center}
             zoom={8}
         >
-            <div id="floating-panel">
-                <b>Technical Specialist: </b>
-
-                <select id="start" name="start" disabled={true} onChange={props.handledropDownClick} value={props.selectedTS}>
-                    {props.markers && props.markers.map((x,i) => {                       
-                        if (x.scheduleStatus === scheduleStatus.Booked || x.scheduleStatus === scheduleStatus.Available || x.scheduleStatus === scheduleStatus.PTO || x.scheduleStatus === scheduleStatus.TBA) {
-                            return (
-                                <option key={i} value={x.firstName}>{x.firstName}</option>
-                            )
-                        }
-                         return null;
-                    })}
-                </select>
-                <b>Suppliers: </b>
-                <select id="end" name="end" onChange={props.handledropDownClick}  value={props.selectedSupplier}>
-                    {props.markers &&  props.markers.map((x,i) => {
-                         if (x.scheduleStatus === null) {
-                            return (
-                                <option key={i} value={x.firstName}>{x.firstName}</option>
-                            )
-                        }
-                        return null;
-                    })}
-                </select>
+            <div className="row" id="floating-panel">             
+                <CustomInput
+                    hasLabel={true}
+                    name="chCompanyCode"
+                    id="chCompanyCodeId"
+                    colSize='s6 pl-0'
+                    label={'Technical Specialist'}
+                    optionsList={props.listofTechnicalSpec}
+                    labelClass="customLabel"
+                    optionName='firstName'
+                    optionValue="firstName"
+                    disabled={false}
+                    type='select'
+                    inputClass="customInputs"
+                    defaultValue={props.selectedTS}
+                    onSelectChange={props.handledropDownChange} />                
+                 <CustomInput
+                    hasLabel={true}
+                    name="supplier"
+                    id="supplierId"
+                    colSize='s6'
+                    label={'Suppliers'}
+                    optionsList={props.listofSupplier}
+                    labelClass="customLabel"
+                    optionName='supplierName'
+                    optionValue="supplierName"
+                    disabled={false}
+                    type='select'
+                    inputClass="customInputs"
+                    defaultValue={props.selectedSupplier}
+                    onSelectChange={props.handledropDownChange} />             
             </div>
 
             {props.markers.map((marker, index) => {
@@ -70,7 +79,6 @@ const listofSupplier = props.markers.filter(x => x.scheduleStatus === null);
                 return (
                     <Marker
                         key={index}
-                        //place={'14553 AL-22, Maplesville, AL 36750, USA'}
                         position={{ lat: marker.location.lat, lng: marker.location.lng }}
                         onClick={() => props.onMarkerClick(marker)}
                         label={marker.scheduleStatus ? 'TS' : 'S'}
@@ -112,142 +120,14 @@ export default class DirectionsGoogleMap extends Component {
         selectedSupplier:{ lat:'',lng:'',name:'' },
         directions: null,
         distanceInfo:null,
-        //markers_2 : props.quickSearchResult,
-        //markers_1 : props.quickSearchResult.filter(resultArray => resultArray);
-        markers_1 : props.quickSearchResult && props.quickSearchResult[0].resourceSearchTechspecInfos.map(function(el) {
-            let o = Object.assign({}, el);
-            o.isActive = false;
-            return o;
-          }),          
-       
-        markers: [
-            {
-            "scheduleStatus": 'PTO',
-            "showInfo": false,           
-            "name": `Alabama`,
-            "address":'14553 AL-22, Maplesville, AL 36750, USA',
-            "location": {
-                "lat":32.806671,
-                "lng":-86.791130,
-            },
-        },
-        {
-            "scheduleStatus": 'Booked',
-            "showInfo": false,           
-            "name": `Alaska`,
-            "address":'Tyonek, Alaska 99682, United States',
-            "location": {
-                "lat": 61.370716,
-                "lng": -152.404419,
-            },
-        },
-        {
-            "scheduleStatus": 'TBA',
-            "showInfo": false,
-            "name": `Arizona`,
-            "address":'Cline Cabin Road, Rio Verde, Arizona 85263, United States',            
-            "location": {
-                "lat": 33.729759,
-                "lng": -111.431221,
-            },
-        },
-        {
-            "scheduleStatus": 'Available',
-            "showInfo": false,           
-            "name": `Arkansas`,
-            "address":'Green Lake Road, Conway, Arkansas 72032, United States',
-            "location": {
-                "lat": 34.969704,
-                "lng": -92.373123,
-            },
-        },
-        {
-            "scheduleStatus": null,
-            "showInfo": false,
-            "name": `California`,
-            "address":'12th Avenue, Hanford, California 93230, United States',
-            "location": {
-                "lat": 36.116203,
-                "lng": -119.681564,
-            },
-
-        },
-        {
-            "scheduleStatus": null,
-            "showInfo": false,           
-            "name": `Colorado`,
-            "address":'Forest Service Road 897, Lake George, Colorado 80827, United States',
-            "location": {
-                "lat": 39.059811,
-                "lng": -105.311104,
-            }
-        },
-        {
-            "scheduleStatus": null,
-            "showInfo": false,           
-            "name": `Connecticut`,
-            "address":'1829 Orchard Road, Berlin, Connecticut 06037, United States',
-            "location": {
-                "lat": 41.597782,
-                "lng": -72.755371,
-            }
-        },
-        {
-            "scheduleStatus": null,
-            "showInfo": false,          
-            "name": `Delaware`,
-            "addrsss":'3902 Delaware Highway 9, Smyrna, Delaware 19977, United States',
-            "location": {
-                "lat": 39.318523,
-                "lng": -75.507141,
-            }
-        },
-        {
-            "scheduleStatus": null,
-            "showInfo": false,
-            "name": `Columbia`,
-            "location": {
-                "lat": 38.897438,
-                "lng": -77.026817,
-            }
-        },
-        {
-            "scheduleStatus": null,
-            "showInfo": false,           
-            "name": `Florida`,
-            "address":'675 Campbell Road, Fort Meade, Florida 33841, United States',
-            "location": {
-                "lat": 27.766279,
-                "lng": -81.686783,
-            }
-        },
-        {
-            "scheduleStatus": null,
-            "showInfo": false,           
-            "name": `Georgia`,
-            "address":'670 Five Points Road, Gray, Georgia 31032, United States',
-            "location": {
-                "lat": 33.040619,
-                "lng": -83.643074,
-            }
-        } ,
-       
-        {
-            "scheduleStatus": null,
-            "showInfo": false,           
-            "name": `Illinois`,
-            "address":'14668 East 450 North Road, Heyworth, Illinois 61745, United States',
-            "location": {
-                "lat": 40.349457,
-                "lng": -88.986137,
-            }
-        }             
-
-        ]
+        markers:[],
+        listofTechnicalSpec:[],
+        listofSupplier:[]       
+        
     };
   }
     
-    handledropDownClick=(e) =>{  
+    handledropDownChange=(e) =>{  
         const selectedName = e.target.value;
         let selectedLatitude = {};
         this.state.markers.map(x => {
@@ -432,28 +312,94 @@ export default class DirectionsGoogleMap extends Component {
     };
 
     componentDidMount(){
+        debugger;
+        const techSpecData =[];
+        const supplierData =[];
+        const markersData=[];
+        let customObj={};
+        let supplierObj={};
+        let o;
+        this.props.mapData.map((x,i) => { 
+                if(x.supplierInfo.length > 0){
+                    x.supplierInfo.map((obj,index)=>{                                            
+                        supplierObj={
+                            "supplierName":obj.supplierName,
+                            "supplierType":obj.supplierType,
+                            "supplierGeoLocation":{
+                                "longitude":x.supplierGeoLocation.longitude,
+                                "latitude":x.supplierGeoLocation.latitude
+                             }                            
+                        };
+                        supplierData.push(supplierObj);
+                    });
+                }            
+                if(x.resourceSearchTechspecInfos.length > 0){
+                    debugger;
+                    x.resourceSearchTechspecInfos.map((obj,index)=>{
+                        techSpecData.push(obj);
+                    });
+                }  
+         });
+         const techSpecdata = RemoveDuplicateArray(techSpecData,'epin');
+         const supplierdata = RemoveDuplicateArray(supplierData,'supplierName');
+         const finalData = [ ...techSpecdata,  ...supplierdata ];  
+
+         finalData.map((x,i)=>{
+             debugger;
+             if(x.supplierType === 'Supplier' || x.supplierType === 'SubSupplier' ){
+                customObj={
+                    "scheduleStatus": null,
+                    "showInfo": false,
+                    "name": x.supplierName,
+                    "distanceFromVenderInKm":null,
+                    "location": {
+                        "lat": x.supplierGeoLocation.latitude,
+                        "lng": x.supplierGeoLocation.longitude,
+                    }
+                };
+            }else{
+                 customObj={
+                    "scheduleStatus": x.scheduleStatus,
+                    "showInfo": false,
+                    "name": x.firstName +' '+ x.lastName,
+                    "distanceFromVenderInKm":x.distanceFromVenderInKm,
+                    "location": {
+                        "lat": x.techSpecGeoLocation.latitude,
+                        "lng": x.techSpecGeoLocation.longitude,
+                    }
+                };
+             }
+             markersData.push(customObj);
+             
+         });        
+
         this.setState({ selectedTS:{ lat:32.806671,lng: -86.791130,name:'' },
-                       selectedSupplier:{ lat:32.806671,lng: -86.791130,name:'' }, });
+                       selectedSupplier:{ lat:32.806671,lng: -86.791130,name:'' }, 
+                       listofTechnicalSpec:techSpecdata,
+                       listofSupplier:supplierdata,
+                       markers:markersData
+                    });
     }
 
     render() {
-        debugger;
-        console.log( this.state.markers_1 );
+        
         return (
             <DirectionsServices
                 googleMapURL= "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyDZSVnT-Oaft2Stx72a_OG0DN8_Z-9-d48"
                 loadingElement={<div style={{ height: `100%` }} />}
-                containerElement={<div style={{ height: `800px` }} />}
+                containerElement={<div style={{ height: `420px` }} />}
                 mapElement= {<div style={{ height: `100%` }} />}
-                center= {{ lat: 32.806671, lng:-86.791130 }}
+                center= {{ lat: 61.370716, lng:-152.404419 }}
                 directions={this.state.directions}
                 distanceInfo={this.state.distanceInfo}
-                markers={this.state.markers_1}
+                markers={this.state.markers}
                 onMarkerClick={this.handleMarkerClick}
                 onMarkerClose={this.handleMarkerClose}
-                handledropDownClick={this.handledropDownClick}
+                handledropDownChange={this.handledropDownChange}
                 selectedTS={this.state.selectedTS.name}
                 selectedSupplier={this.state.selectedSupplier.name}
+                listofTechnicalSpec={this.state.listofTechnicalSpec}
+                listofSupplier={this.state.listofSupplier}
 
             />
         );
