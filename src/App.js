@@ -6,73 +6,52 @@ import './mapStyle.css';
 import DirectionswithDistanceExample from './customMapWithDistance';
 export const techSpecListresult=[
   {
-    "location": "London",
+    "location": "Aberdeen, Aberdeen, United Kingdom",
+    "supplierGeoLocation": {
+      "longitude": -2.094278,
+      "latitude": 57.149717
+    },
     "resourceSearchTechspecInfos": [
       {
         "employmentTypePrecedence": 1,
         "employmentType": "FT Employee",
         "scheduleStatusPrecedence": 1,
         "scheduleStatus": "Available",
+        "distanceFromVenderInKm": "1 m",
         "distanceFromVenderInMile": 0,
         "isSupplier": false,
-        "mobileNumber": "123",
-        "email": "12@sdf.com",
-        "subDivision": "Audit",
-        "epin": 43842,
-        "lastName": "sdf",
-        "firstName": "rtt",
+        "mobileNumber": "123654789",
+        "email": "test@test.com",
+        "subDivision": "AIM",
+        "googleAddress": "Aberdeen, Aberdeen, United Kingdom",
+        "epin": 43957,
+        "lastName": "test",
+        "firstName": "netserv",
         "profileStatus": "Active",
-        "distanceFromVenderInKm": "",
-        "googleAddress": "Mangalore, Karnataka, India",
-        "city": "Mangalore",
-        "state": "Karnataka",
-        "country": "India",
+        "city": "Aberdeen",
+        "state": "Aberdeen",
+        "country": "United Kingdom",
         "zip": null,
         "techSpecGeoLocation": {
-          "longitude": 61.370716,
-          "latitude": -152.404419
+          "longitude": -2.094278,
+          "latitude": 57.149717
         }
       },
       {
         "employmentTypePrecedence": 1,
         "employmentType": "FT Employee",
         "scheduleStatusPrecedence": 1,
-        "scheduleStatus": "Booked",
-        "distanceFromVenderInMile": 90,
+        "scheduleStatus": "Available",
+        "distanceFromVenderInKm": "1 m",
+        "distanceFromVenderInMile": 0,
         "isSupplier": false,
-        "mobileNumber": "4334434434",
-        "email": "rahul@raj.com",
-        "subDivision": "AIM",
-        "epin": 43824,
-        "lastName": "Raj",
-        "firstName": "Rahul",
-        "profileStatus": "Active",
-        "distanceFromVenderInKm": "877 ",
+        "mobileNumber": "4455784858",
+        "email": "sandhya@gmail.com",
+        "subDivision": "Audit",
         "googleAddress": "Aberdeen, Aberdeen, United Kingdom",
-        "city": "Aberdeen",
-        "state": "Aberdeen",
-        "country": "United Kingdom",
-        "zip": null,
-        "techSpecGeoLocation": {
-          "longitude": 33.729759,
-          "latitude": -111.431221
-        }
-      },
-      {
-        "employmentTypePrecedence": 3,
-        "employmentType": "Independent Contractor",
-        "scheduleStatusPrecedence": 1,
-        "scheduleStatus": "PTO",
-        "distanceFromVenderInKm": "877 ",
-        "distanceFromVenderInMile": 460,
-        "isSupplier": false,
-        "mobileNumber": "123458556",
-        "email": "test@gmail.com",
-        "subDivision": "Drilling, Production & Equipment",
-        "googleAddress": "Aberdeen, Aberdeen, United Kingdom",
-        "epin": 44051,
-        "lastName": "williamson",
-        "firstName": "kane",
+        "epin": 45039,
+        "lastName": "v",
+        "firstName": "sandhya",
         "profileStatus": "Active",
         "city": "Aberdeen",
         "state": "Aberdeen",
@@ -84,149 +63,43 @@ export const techSpecListresult=[
         }
       }
     ],
-    "supplierGeoLocation": {
-      "longitude": 32.806671,
-      "latitude": -86.79113
-    },
     "supplierInfo": [
       {
         "supplierType": "Supplier",
-        "supplierName": "asdas"
-      },
-      {
-        "supplierType": "SubSupplier",
-        "supplierName": "afdfsad"
-      },
-      {
-        "supplierType": "SubSupplier",
-        "supplierName": "afdfsad"
+        "supplierName": "testSupplier"
       }
     ]
   },
   {
-    "location": "uk",
-    "resourceSearchTechspecInfos": [
-      {
-        "employmentTypePrecedence": 1,
-        "employmentType": "FT Employee",
-        "scheduleStatusPrecedence": 1,
-        "scheduleStatus": "TBA",
-        "distanceFromVenderInMile": 60,
-        "isSupplier": false,
-        "mobileNumber": "123",
-        "email": "12@sdf.com",
-        "subDivision": "Audit",
-        "epin": 43842,
-        "lastName": "sdf",
-        "firstName": "TS3",
-        "profileStatus": "Active",
-        "distanceFromVenderInKm": "",
-        "googleAddress": "Mangalore, Karnataka, India",
-        "city": "Mangalore",
-        "state": "Karnataka",
-        "country": "India",
-        "zip": null,
-        "techSpecGeoLocation": {
-          "longitude": 34.969704,
-          "latitude": -92.373123
-        }
-      },
-      {
-        "employmentTypePrecedence": 1,
-        "employmentType": "FT Employee",
-        "scheduleStatusPrecedence": 1,
-        "scheduleStatus": "Available",
-        "distanceFromVenderInMile": 800,
-        "isSupplier": false,
-        "mobileNumber": "4334434434",
-        "email": "rahul@raj.com",
-        "subDivision": "AIM",
-        "epin": 43824,
-        "lastName": "Raj",
-        "firstName": "Rahul",
-        "profileStatus": "Active",
-        "distanceFromVenderInKm": "877 ",
-        "googleAddress": "Aberdeen, Aberdeen, United Kingdom",
-        "city": "Aberdeen",
-        "state": "Aberdeen",
-        "country": "United Kingdom",
-        "zip": null,
-        "techSpecGeoLocation": {
-          "longitude": 36.116203,
-          "latitude": -119.681564
-        }
-      },
-      {
-        "employmentTypePrecedence": 3,
-        "employmentType": "Independent Contractor",
-        "scheduleStatusPrecedence": 1,
-        "scheduleStatus": "Available",
-        "distanceFromVenderInKm": "877 ",
-        "distanceFromVenderInMile": 545,
-        "isSupplier": false,
-        "mobileNumber": "123458556",
-        "email": "test@gmail.com",
-        "subDivision": "Drilling, Production & Equipment",
-        "googleAddress": "Aberdeen, Aberdeen, United Kingdom",
-        "epin": 44051,
-        "lastName": "williamson",
-        "firstName": "kane",
-        "profileStatus": "Active",
-        "city": "Aberdeen",
-        "state": "Aberdeen",
-        "country": "United Kingdom",
-        "zip": null,
-        "techSpecGeoLocation": {
-          "longitude": 39.059811,
-          "latitude": -105.311104
-        }
-      }
-    ],
+    "location": "Bath",
     "supplierGeoLocation": {
-      "longitude": 61.370716,
-      "latitude": -152.404419
+      "longitude": -2.3590167,
+      "latitude": 51.3810641
     },
-    "supplierInfo": [
-      {
-        "supplierType": "Supplier",
-        "supplierName": "asdas"
-      },
-      {
-        "supplierType": "SubSupplier",
-        "supplierName": "afdfsad"
-      },
-      {
-        "supplierType": "SubSupplier",
-        "supplierName": "afdfsad"
-      }
-    ]
-  },
-  {
-    "location": "uk",
     "resourceSearchTechspecInfos": [
       {
         "employmentTypePrecedence": 1,
         "employmentType": "FT Employee",
         "scheduleStatusPrecedence": 1,
         "scheduleStatus": "Available",
-        "distanceFromVenderInMile": 0,
+        "distanceFromVenderInKm": "831 ",
+        "distanceFromVenderInMile": 517,
         "isSupplier": false,
-        "mobileNumber": "123",
-        "email": "12@sdf.com",
-        "subDivision": "Audit",
-        "epin": 43842,
-        "lastName": "sdf",
-        "firstName": "rtt",
+        "mobileNumber": "123654789",
+        "email": "test@test.com",
+        "subDivision": "AIM",
+        "googleAddress": "Aberdeen, Aberdeen, United Kingdom",
+        "epin": 43957,
+        "lastName": "test",
+        "firstName": "netserv",
         "profileStatus": "Active",
-        "distanceFromVenderInKm": 120,
-        "googleAddress": "Mangalore, Karnataka, India",
-        "city": "Mangalore",
-        "state": "Karnataka",
-        "country": "India",
+        "city": "Aberdeen",
+        "state": "Aberdeen",
+        "country": "United Kingdom",
         "zip": null,
         "techSpecGeoLocation": {
-          "longitude": 41.597782,
-          "latitude": -72.755371
+          "longitude": -2.094278,
+          "latitude": 57.149717
         }
       },
       {
@@ -234,72 +107,101 @@ export const techSpecListresult=[
         "employmentType": "FT Employee",
         "scheduleStatusPrecedence": 1,
         "scheduleStatus": "Available",
-        "distanceFromVenderInMile": 250,
+        "distanceFromVenderInKm": "831 ",
+        "distanceFromVenderInMile": 517,
         "isSupplier": false,
-        "mobileNumber": "4334434434",
-        "email": "rahul@raj.com",
-        "subDivision": "AIM",
-        "epin": 43824,
-        "lastName": "Raj",
-        "firstName": "Rahul",
-        "profileStatus": "Active",
-        "distanceFromVenderInKm": "877 ",
+        "mobileNumber": "4455784858",
+        "email": "sandhya@gmail.com",
+        "subDivision": "Audit",
         "googleAddress": "Aberdeen, Aberdeen, United Kingdom",
-        "city": "Aberdeen",
-        "state": "Aberdeen",
-        "country": "United Kingdom",
-        "zip": null,
-        "techSpecGeoLocation": {
-          "longitude": 39.318523,
-          "latitude": -75.507141
-        }
-      },
-      {
-        "employmentTypePrecedence": 3,
-        "employmentType": "Independent Contractor",
-        "scheduleStatusPrecedence": 1,
-        "scheduleStatus": "Available",
-        "distanceFromVenderInKm": "877 ",
-        "distanceFromVenderInMile": 200,
-        "isSupplier": false,
-        "mobileNumber": "123458556",
-        "email": "test@gmail.com",
-        "subDivision": "Drilling, Production & Equipment",
-        "googleAddress": "Aberdeen, Aberdeen, United Kingdom",
-        "epin": 44051,
-        "lastName": "williamson",
-        "firstName": "kane",
+        "epin": 45039,
+        "lastName": "v",
+        "firstName": "sandhya",
         "profileStatus": "Active",
         "city": "Aberdeen",
         "state": "Aberdeen",
         "country": "United Kingdom",
         "zip": null,
         "techSpecGeoLocation": {
-          "longitude": 38.897438,
-          "latitude": -77.026817
+          "longitude": -2.094278,
+          "latitude": 57.149717
         }
       }
     ],
-    "supplierGeoLocation": {
-      "longitude": 33.729759,
-      "latitude": -111.431221
-    },
     "supplierInfo": [
       {
-        "supplierType": "Supplier",
-        "supplierName": "asdas"
+        "supplierType": "SubSupplier",
+        "supplierName": "test7"
+      }
+    ]
+  },
+  {
+    "location": "United Kingdom",
+    "supplierGeoLocation": {
+      "longitude": -3.435973,
+      "latitude": 55.378051
+    },
+    "resourceSearchTechspecInfos": [
+      {
+        "employmentTypePrecedence": 1,
+        "employmentType": "FT Employee",
+        "scheduleStatusPrecedence": 1,
+        "scheduleStatus": "Available",
+        "distanceFromVenderInKm": "315 ",
+        "distanceFromVenderInMile": 196,
+        "isSupplier": false,
+        "mobileNumber": "123654789",
+        "email": "test@test.com",
+        "subDivision": "AIM",
+        "googleAddress": "Aberdeen, Aberdeen, United Kingdom",
+        "epin": 43957,
+        "lastName": "test",
+        "firstName": "netserv",
+        "profileStatus": "Active",
+        "city": "Aberdeen",
+        "state": "Aberdeen",
+        "country": "United Kingdom",
+        "zip": null,
+        "techSpecGeoLocation": {
+          "longitude": -2.094278,
+          "latitude": 57.149717
+        }
       },
       {
-        "supplierType": "SubSupplier",
-        "supplierName": "afdfsad"
-      },
+        "employmentTypePrecedence": 1,
+        "employmentType": "FT Employee",
+        "scheduleStatusPrecedence": 1,
+        "scheduleStatus": "Available",
+        "distanceFromVenderInKm": "315 ",
+        "distanceFromVenderInMile": 196,
+        "isSupplier": false,
+        "mobileNumber": "4455784858",
+        "email": "sandhya@gmail.com",
+        "subDivision": "Audit",
+        "googleAddress": "Aberdeen, Aberdeen, United Kingdom",
+        "epin": 45039,
+        "lastName": "v",
+        "firstName": "sandhya",
+        "profileStatus": "Active",
+        "city": "Aberdeen",
+        "state": "Aberdeen",
+        "country": "United Kingdom",
+        "zip": null,
+        "techSpecGeoLocation": {
+          "longitude": -2.094278,
+          "latitude": 57.149717
+        }
+      }
+    ],
+    "supplierInfo": [
       {
         "supplierType": "SubSupplier",
-        "supplierName": "afdfsad"
+        "supplierName": "test6"
       }
     ]
   }
-];
+]
+;
 export const quickSearchResult=[{
   "location": "uk",
   "supplierType": "Supplier",
