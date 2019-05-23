@@ -4,8 +4,9 @@ import {
     Component,
 } from "react";
 import { compose } from 'recompose';
-import  CustomInput  from '../../baseComponents/inputControlls';
-import { RemoveDuplicateArray }  from '../../../utils/commonUtils';
+//import  CustomInput  from '../../baseComponents/inputControlls';
+//import { RemoveDuplicateArray }  from '../../../utils/commonUtils';
+import _ from 'lodash';
 
 import {
     withScriptjs,
@@ -34,14 +35,12 @@ const DirectionsServices = compose(
     withGoogleMap)(props => {
 const iconUrl = "http://maps.google.com/mapfiles/ms/icons/";
 debugger;
-//const listofTechnicalSpec = props.markers.filter(x => x.scheduleStatus === scheduleStatus[x.scheduleStatus]);
-//const listofSupplier = props.markers.filter(x => x.scheduleStatus === null);
     return (
         <GoogleMap
             defaultCenter={props.center}
-            zoom={8}
+            zoom={6}
         >
-            <div className="row" id="floating-panel">             
+            {/* <div className="row" id="floating-panel">             
                 <CustomInput
                     hasLabel={true}
                     name="chCompanyCode"
@@ -72,6 +71,31 @@ debugger;
                     inputClass="customInputs"
                     defaultValue={props.selectedSupplier}
                     onSelectChange={props.handledropDownChange} />             
+            </div> */}
+             <div id="floating-panel">
+                <b>Technical Specialist: </b>
+
+                <select id="start" name="start" disabled={false} onChange={props.handledropDownChange} value={props.selectedTS}>
+                    {props.markers && props.markers.map((x,i) => {                       
+                        if (x.scheduleStatus === scheduleStatus.Booked || x.scheduleStatus === scheduleStatus.Available || x.scheduleStatus === scheduleStatus.PTO || x.scheduleStatus === scheduleStatus.TBA) {
+                            return (
+                                <option key={i} value={x.name}>{x.name}</option>
+                            )
+                        }
+                         return null;
+                    })}
+                </select>
+                <b>Suppliers: </b>
+                <select id="end" name="end" onChange={props.handledropDownChange}  value={props.selectedSupplier}>
+                    {props.markers &&  props.markers.map((x,i) => {
+                         if (x.scheduleStatus === null) {
+                            return (
+                                <option key={i} value={x.name}>{x.name}</option>
+                            )
+                       }
+                       return null;
+                    })}
+                </select>
             </div>
 
             {props.markers.map((marker, index) => {
@@ -122,12 +146,13 @@ export default class DirectionsGoogleMap extends Component {
         distanceInfo:null,
         markers:[],
         listofTechnicalSpec:[],
-        listofSupplier:[]       
-        
+        listofSupplier:[],
+        center:{lat:'',lng:''} 
     };
   }
     
-    handledropDownChange=(e) =>{  
+    handledropDownChange=(e) =>{ 
+        debugger; 
         const selectedName = e.target.value;
         let selectedLatitude = {};
         this.state.markers.map(x => {
@@ -256,7 +281,7 @@ export default class DirectionsGoogleMap extends Component {
         }));
         const shortestLocation = nearestLocation.find(obj => obj.distance === min);
 
-        this.updateDistance(shortestLocation,targetMarker);
+        //this.updateDistance(shortestLocation,targetMarker);
 
         this.setState({           
             selectedTS:{ lat:targetMarker.location.lat,lng:targetMarker.location.lng,name:targetMarker.name },
@@ -311,8 +336,7 @@ export default class DirectionsGoogleMap extends Component {
         });
     };
 
-    componentDidMount(){
-        debugger;
+    componentDidMount(){      
         const techSpecData =[];
         const supplierData =[];
         const markersData=[];
@@ -333,25 +357,27 @@ export default class DirectionsGoogleMap extends Component {
                         supplierData.push(supplierObj);
                     });
                 }            
-                if(x.resourceSearchTechspecInfos.length > 0){
-                    debugger;
+                if(x.resourceSearchTechspecInfos.length > 0){                 
                     x.resourceSearchTechspecInfos.map((obj,index)=>{
                         techSpecData.push(obj);
                     });
                 }  
          });
-         const techSpecdata = RemoveDuplicateArray(techSpecData,'epin');
-         const supplierdata = RemoveDuplicateArray(supplierData,'supplierName');
+         //const techSpecdata = RemoveDuplicateArray(techSpecData,'epin');
+         //const supplierdata = RemoveDuplicateArray(supplierData,'supplierName');
+         const techSpecdata = _.uniqBy(techSpecData,'epin');
+         const supplierdata = _.uniqBy(supplierData,'supplierName');
+
          const finalData = [ ...techSpecdata,  ...supplierdata ];  
 
          finalData.map((x,i)=>{
-             debugger;
-             if(x.supplierType === 'Supplier' || x.supplierType === 'SubSupplier' ){
+               if(x.supplierType === 'Supplier' || x.supplierType === 'SubSupplier' ){
                 customObj={
                     "scheduleStatus": null,
                     "showInfo": false,
                     "name": x.supplierName,
                     "distanceFromVenderInKm":null,
+                    "distanceFromVenderInMile":null,
                     "location": {
                         "lat": x.supplierGeoLocation.latitude,
                         "lng": x.supplierGeoLocation.longitude,
@@ -363,6 +389,7 @@ export default class DirectionsGoogleMap extends Component {
                     "showInfo": false,
                     "name": x.firstName +' '+ x.lastName,
                     "distanceFromVenderInKm":x.distanceFromVenderInKm,
+                    "distanceFromVenderInMile":x.distanceFromVenderInMile,
                     "location": {
                         "lat": x.techSpecGeoLocation.latitude,
                         "lng": x.techSpecGeoLocation.longitude,
@@ -373,11 +400,12 @@ export default class DirectionsGoogleMap extends Component {
              
          });        
 
-        this.setState({ selectedTS:{ lat:32.806671,lng: -86.791130,name:'' },
-                       selectedSupplier:{ lat:32.806671,lng: -86.791130,name:'' }, 
+        this.setState({ selectedTS:{ lat:markersData[0].location.lat, lng:markersData[0].location.lng, name:'' },
+                       //selectedSupplier:{ lat:32.806671,lng: -86.791130,name:'' }, 
                        listofTechnicalSpec:techSpecdata,
                        listofSupplier:supplierdata,
-                       markers:markersData
+                       markers:markersData,
+                       center:{lat: markersData[0].location.lat, lng:markersData[0].location.lng }
                     });
     }
 
@@ -387,9 +415,9 @@ export default class DirectionsGoogleMap extends Component {
             <DirectionsServices
                 googleMapURL= "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places&key=AIzaSyDZSVnT-Oaft2Stx72a_OG0DN8_Z-9-d48"
                 loadingElement={<div style={{ height: `100%` }} />}
-                containerElement={<div style={{ height: `420px` }} />}
+                containerElement={<div style={{ height: `850px` }} />}
                 mapElement= {<div style={{ height: `100%` }} />}
-                center= {{ lat: 61.370716, lng:-152.404419 }}
+                center= {this.state.center}
                 directions={this.state.directions}
                 distanceInfo={this.state.distanceInfo}
                 markers={this.state.markers}
